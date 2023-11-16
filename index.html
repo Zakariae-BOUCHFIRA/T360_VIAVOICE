@@ -1,0 +1,424 @@
+<!-- <?php
+  session_start();
+  $heure=date("H");
+  // Check if the user has already submitted the form
+  if(isset($_SESSION['form_submitted']) && $_SESSION['form_submitted'] === true) {
+      // User has already submitted the form, redirect to merci.html
+      header("Location: merci.php");
+      exit();
+  }
+  else
+  {
+    // Connect to the database
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "rs";
+    
+
+    /* try {
+        $db = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        echo "Connection failed: " . $e->getMessage();
+    } */
+
+    // Get visitor information
+    $ipAddress = $_SERVER['REMOTE_ADDR'];
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $visitTime = date('Y-m-d H:i:s');
+    $platform="Facebook";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    $sql = "INSERT INTO visitor_log (ip_address, user_agent, visit_time, platform) VALUES ('$ipAddress', '$userAgent', '$visitTime', '$platform')";
+    $conn->query($sql);
+    /* try {
+        $stmt = $db->prepare("INSERT INTO visitor_log (ip_address, user_agent, visit_time, platform) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$ipAddress, $userAgent, $visitTime, $platform]);
+    } catch (PDOException $e) {
+        echo "Error inserting data: " . $e->getMessage();
+    } */
+  }
+?> -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=no" charset="utf-8">
+  <title>IA, OVNIS et Conscience Humaine</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="./favicon.png">
+
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+
+
+</head>
+<body>
+  <div class="bg">
+      
+  </div>
+  <div class="container">
+    
+    <div class="chat-container">
+      <div class="logo">
+        <img src="./Logitude2.png" width="130px" alt="">
+      </div>
+      
+      <form action="./merci.php">
+        
+        <input type="hidden" id="submitted" value="false">
+        <input type="hidden" id="platform">
+        <input type="hidden" id="rs4_rec" value="">
+
+        <div class="error">
+        </div>
+
+
+        <div class="question" id="question">
+          <p class="q">Bonjour et bienvenue!<br>Nous menons une enquête sur (...), votre opinion nous intéresse.<br>Appuyez sur Démarrer et donnez-nous votre avis.</p>
+          <label><input type="hidden" name="intro"></label>
+          <div class="in">
+            <button type="button" id="btnD" class="nextQuestion nxtQ">Démarrer</button>
+          </div>
+        </div>
+        
+        <div class="question" id="question1">
+            <p class="q">C'est parti! Avant d'entamer notre enquête et pour mieux classer nos résultats nous aimerions en savoir un peu plus sur vous.</p>
+            <p class="q">Êtes-vous ?</p>
+            <label class="option">
+              <input type="radio" name="rs1" value="1">
+              <span class="spansexe">Homme</span>
+            </label>
+            <br>
+            <label class="option">
+              <input type="radio" name="rs1" value="2">
+              <span class="spansexe">Femme</span>
+            </label><br>
+            <div class="in">
+              <button type="button" class="nextQuestion nxtQ">Suivant</button>
+            </div>
+        </div>
+
+
+        <div class="question " id="question2">
+          <p class="q">Quel âge avez-vous ?</p>
+          <div class="in">
+            <label class="txt"><input type="text" maxlength="3" name="rs2" id="rs2" required></label>
+            <button type="button" class="txtbtnnext  nextQuestion">Suivant</button>
+          </div>
+        </div>
+         
+
+        <div class="question" id="question3">
+          <p class="q">Actuellement, quelle est votre situation ?</p>
+          <label><input type="radio" name="rs3" value="1"> <span>J'exerce une activité professionnelle</span></label><br>
+          <label><input type="radio" name="rs3" value="2"> <span>Je suis chômeur ayant déjà travaillé</span></label><br>
+          <label><input type="radio" name="rs3" value="3"> <span>Je suis retraité ou préretraité</span></label><br>
+          <label><input type="radio" name="rs3" value="4"> <span>Je suis à la recherche d'un premier emploi</span></label><br>
+          <label><input type="radio" name="rs3" value="5"> <span>Je suis élève, étudiant</span></label><br>
+          <label><input type="radio" name="rs3" value="6"> <span>Je suis une personne au foyer</span></label><br>
+          <label><input type="radio" name="rs3" value="7"> <span>Je suis sans profession</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+        
+        <div class="question" id="question4">
+          <p class="q">Actuellement, quelle est votre situation ?</p>
+          <label><input type="radio" name="rs4" value="1"> <span>Agriculteur exploitant</span></label><br>
+          <label><input type="radio" name="rs4" value="2"> <span>Artisan / Commerçant / Chef d'entreprise</span></label><br>
+          <label><input type="radio" name="rs4" value="3"> <span>Profession libérale et assimilé</span></label><br>
+          <label><input type="radio" name="rs4" value="4"> <span>Cadre de la fonction publique, professeur certifié ou agrégé, profession scientifique, profession de l'information, des arts et des spectacles</span></label><br>
+          <label><input type="radio" name="rs4" value="5"> <span>Cadre d'entreprise (administratifs et commerciaux, ingénieurs et cadres techniques...)</span></label><br>
+          <label><input type="radio" name="rs4" value="6"> <span>Profession intermédiaire de la fonction publique, de l'enseignement (dont professeur des écoles), de la santé (dont infirmier, sage-femme, kinésithérapeute), du travail social</span></label><br>
+          <label><input type="radio" name="rs4" value="7"> <span>Profession intermédiaire administrative et commerciale des entreprises (commercial, technicien administratif...)</span></label><br>
+          <label><input type="radio" name="rs4" value="8"> <span>Technicien (géomètre, dessinateur, travaux publics...)</span></label><br>
+          <label><input type="radio" name="rs4" value="9"> <span>Contremaître, agent de maîtrise</span></label><br>
+          <label><input type="radio" name="rs4" value="10"> <span>Clergé, religieux</span></label><br>
+          <label><input type="radio" name="rs4" value="11"> <span>Employé et agent de la fonction publique</span></label><br>
+          <label><input type="radio" name="rs4" value="12"> <span>Policier, militaire, pompier</span></label><br>
+          <label><input type="radio" name="rs4" value="13"> <span>Employé administratif d'entreprise (standardiste, dactylo, secrétaire, hôtesse de l'air, steward...)</span></label><br>
+          <label><input type="radio" name="rs4" value="14"> <span>Employé de commerce (caissier, vendeur...)</span></label><br>
+          <label><input type="radio" name="rs4" value="15"> <span>Personnel des services aux particuliers (assistante maternelle, concierge, aide à domicile, coiffeur...)</span></label><br>
+          <label><input type="radio" name="rs4" value="16"> <span>Ouvrier qualifié, chauffeur</span></label><br>
+          <label><input type="radio" name="rs4" value="17"> <span>Ouvrier non qualifié</span></label><br>
+          <label><input type="radio" name="rs4" value="18"> <span>Ouvrier agricole</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+  
+  
+        <div class="question " id="question5">
+          <p class="q">Indiquez le code postal de la commune dans laquelle se trouve votre résidence principale.</p>
+          <div class="in">
+            <label class="txt"><input type="text" maxlength="5" name="rs5" id="rs5" required></label>
+            <button type="button" id="btn_ville" class="txtbtnnext  nextQuestion">Suivant</button>
+          </div>
+        </div>
+
+        <div class="question " id="question_ville">
+        <p class="q">Quel est votre commune ?</p>
+          <div id="cont">
+          </div>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+        <!-- <div class="question" id="question6">
+          <p class="q">Quel est votre niveau de diplôme ?</p>
+          <label><input type="radio" name="rs6" value="1"> <span>Aucun diplôme</span></label><br>
+          <label><input type="radio" name="rs6" value="2"> <span>Brevet des collèges ou diplôme national du brevet (BEPC, DNB)</span></label><br>
+          <label><input type="radio" name="rs6" value="3"> <span>Certificat d’aptitude professionnel (CAP)</span></label><br>
+          <label><input type="radio" name="rs6" value="4"> <span>Brevet d’enseignement professionnel (BEP)</span></label><br>
+          <label><input type="radio" name="rs6" value="5"> <span>Baccalauréat d’enseignement professionnel</span></label><br>
+          <label><input type="radio" name="rs6" value="6"> <span>Baccalauréat d’enseignement technique ou général</span></label><br>
+          <label><input type="radio" name="rs6" value="7"> <span>BAC+2 à +3 (DUT, BTS, diplômes paramédical ou social, licence)</span></label><br>
+          <label><input type="radio" name="rs6" value="8"> <span>Bac+4 à +5 ou supérieur (diplôme de 3ème cycle, master, doctorat, grande école)</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+        <div class="question" id="question7">
+          <p class="q">Quels sont les revenus mensuels de votre foyer ?</p>
+          <label><input type="radio" name="rs7" value="1"> <span>Moins de 1 200 €</span></label><br>
+          <label><input type="radio" name="rs7" value="2"> <span>De 1 201 à 1 500 €</span></label><br>
+          <label><input type="radio" name="rs7" value="3"> <span>De 1 501 à 1 800 €</span></label><br>
+          <label><input type="radio" name="rs7" value="4"> <span>De 1 801 à 2 200 €</span></label><br>
+          <label><input type="radio" name="rs7" value="5"> <span>De 2 201 à 2 600 €</span></label><br>
+          <label><input type="radio" name="rs7" value="6"> <span>De 2 601 à 3 000 €</span></label><br>
+          <label><input type="radio" name="rs7" value="7"> <span>De 3 001 à 3 500 €</span></label><br>
+          <label><input type="radio" name="rs7" value="8"> <span>De 3 501 à 4 200 €</span></label><br>
+          <label><input type="radio" name="rs7" value="9"> <span>De 4 201 à 5 400 €</span></label><br>
+          <label><input type="radio" name="rs7" value="10"> <span>Plus de 5 400 €</span></label><br>
+          <label><input type="radio" name="rs7" value="11"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+        <div class="question" id="question8">
+          <p class="q">Êtes-vous ?</p>
+          <label><input type="radio" name="rs8" value="1"> <span>Marié(e)</span></label><br>
+          <label><input type="radio" name="rs8" value="2"> <span>Célibataire</span></label><br>
+          <label><input type="radio" name="rs8" value="3"> <span>En couple</span></label><br>
+          <label><input type="radio" name="rs8" value="4"> <span>Séparé(e)</span></label><br>
+          <label><input type="radio" name="rs8" value="5"> <span>Veuf(ve)</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+        <div class="question " id="question9">
+          <p class="q">Nous allons maintenant parler de votre rapport à la société en général</p>
+          <p class="q">Concernant votre état d’esprit envers la société, diriez-vous que vous êtes surtout… (Plusieurs réponses possibles)</p>
+          <label><input type="checkbox" name="q1" value="1"> <span>Préoccupé</span></label><br>
+          <label><input type="checkbox" name="q1" value="2"> <span>Désenchanté</span></label><br>
+          <label><input type="checkbox" name="q1" value="3"> <span>Révolté</span></label><br>
+          <label><input type="checkbox" name="q1" value="4"> <span>Pragmatique</span></label><br>
+          <label><input type="checkbox" name="q1" value="5"> <span>Optimiste</span></label><br>
+          <label><input type="checkbox" name="q1" value="6"> <span>Confiant</span></label><br>
+          <label><input type="checkbox" name="q1" value="7"> <span>Indifférent</span></label><br>
+          <label><input type="checkbox" name="q1" value="8"> <span>Heureux </span></label><br>
+          <label><input type="checkbox" name="q1" value="9" id="q1_nsp"><span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" id="nextQuestion nxtQ" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+        <div class="question" id="question10">
+          <p class="q">Sur la longue durée, avez-vous le sentiment que votre situation au sein de la société…</p>
+          <label><input type="radio" name="q2" value="1"> <span>S’améliore plutôt</span></label><br>
+          <label><input type="radio" name="q2" value="2"> <span>Se détériore plutôt</span></label><br>
+          <label><input type="radio" name="q2" value="3"> <span>Reste globalement la même</span></label><br>
+          <label><input type="radio" name="q2" value="4"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+        <div class="question" id="question11">
+          <p class="q">Diriez-vous qu’à titre personnel vous vous sentez…</p>
+          <label><input type="radio" name="q3" value="1"> <span>Très bien protégé par les lois et leur application en France</span></label><br>
+          <label><input type="radio" name="q3" value="2"> <span>Assez bien protégé par les lois et leur application en France</span></label><br>
+          <label><input type="radio" name="q3" value="3"> <span>Assez mal protégé par les lois et leur application en France</span></label><br>
+          <label><input type="radio" name="q3" value="4"> <span>Très bien protégé par les lois et leur application en France</span></label><br>
+          <label><input type="radio" name="q3" value="5"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+
+        <div class="question " id="question12">
+          <p class="q">Nous allons maintenant parler de votre rapport à l’information en général</p>
+          <p class="q">Parmi les canaux d’information suivants, lesquels utilisez-vous pour vous informer ? (Plusieurs réponses possibles)</p>
+          <label><input type="checkbox" name="q4" value="1"> <span>La télévision</span></label><br>
+          <label><input type="checkbox" name="q4" value="2"> <span>La presse écrite (journaux, magazines papiers…)</span></label><br>
+          <label><input type="checkbox" name="q4" value="3"> <span>Internet (journaux en ligne, sites d’actualités, blogs…)</span></label><br>
+          <label><input type="checkbox" name="q4" value="4"> <span>Les comptes de réseaux sociaux des médias/journaux</span></label><br>
+          <label><input type="checkbox" name="q4" value="5"> <span>Les informations partagées par vos proches/amis sur les réseaux sociaux</span></label><br>
+          <label><input type="checkbox" name="q4" value="6"> <span>La radio</span></label><br>
+          <label><input type="checkbox" name="q4" value="7"> <span>Autre</span></label><br>
+          <label><input type="checkbox" name="q4" value="8" id="q4_nsp"><span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" id="nextQuestion nxtQ" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+        <div class="question" id="question13">
+          <p class="q">En règle générale, diriez-vous que le journalisme est un métier… ?</p>
+          <label><input type="radio" name="q5" value="1"> <span>Très utile</span></label><br>
+          <label><input type="radio" name="q5" value="2"> <span>Assez utile</span></label><br>
+          <label><input type="radio" name="q5" value="3"> <span>Pas vraiment utile</span></label><br>
+          <label><input type="radio" name="q5" value="4"> <span>Inutile</span></label><br>
+          <label><input type="radio" name="q5" value="5"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+        <div class="question" id="question14">
+          <p class="q">Quelle est l’information à laquelle vous faites le plus confiance ?</p>
+          <label><input type="radio" name="q6" value="1"> <span>Celle que vous trouvez par vous-même dans les médias professionnels quel que soit le support </span></label><br>
+          <label><input type="radio" name="q6" value="2"> <span>Celle que vous relaient votre entourage ou vos amis, notamment sur les réseaux sociaux</span></label><br>
+          <label><input type="radio" name="q6" value="3"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+        <div class="question" id="question15">
+          <p class="q">Nous allons maintenant évoquer votre rapport à l’intelligence Artificielle (IA)</p>
+          <p class="q">Avez-vous déjà entendu parler de l’intelligence Artificielle (IA) ?</p>
+          <label><input type="radio" name="q7" value="1"> <span>Oui, et vous voyez précisément de quoi il s’agit</span></label><br>
+          <label><input type="radio" name="q7" value="2"> <span>Oui, mais vous ne voyez pas précisément de quoi il s’agit</span></label><br>
+          <label><input type="radio" name="q7" value="3"> <span>Non</span></label><br>
+          <label><input type="radio" name="q7" value="4"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div> -->
+
+
+        <div class="question" id="question16">
+          <p class="q">En fonction de votre expérience ou de l’idée que vous vous en faites, quelle image avez-vous de l’Intelligence Artificielle ?</p>
+          <label><input type="radio" name="q8" value="1"> <span>Une très bonne image</span></label><br>
+          <label><input type="radio" name="q8" value="2"> <span>Plutôt une bonne image</span></label><br>
+          <label><input type="radio" name="q8" value="3"> <span>Plutôt une mauvaise image</span></label><br>
+          <label><input type="radio" name="q8" value="4"> <span>Une très mauvaise image</span></label><br>
+          <label><input type="radio" name="q8" value="5"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+
+        <div class="question" id="question17">
+          <p class="q">Diriez-vous que vous avez tout à fait confiance, plutôt confiance, plutôt pas confiance ou pas du tout confiance en l’Intelligence Artificielle ?</p>
+          <label><input type="radio" name="q9" value="1"> <span>Tout à fait confiance</span></label><br>
+          <label><input type="radio" name="q9" value="2"> <span>Plutôt confiance</span></label><br>
+          <label><input type="radio" name="q9" value="3"> <span>Plutôt pas confiance</span></label><br>
+          <label><input type="radio" name="q9" value="4"> <span>Pas du tout confiance</span></label><br>
+          <label><input type="radio" name="q9" value="5"> <span>Non réponse</span></label><br>
+          <div class="in">
+            <button type="button" class="nextQuestion nxtQ">Suivant</button>
+          </div>
+        </div>
+
+        <div class="question" id="question18">
+          <p class="q">Le questionnaire est terminé merci pour votre participation</p>
+          <div class="in">
+            <button style="margin-bottom: 30px;" class="nxtQ" id="submit">Envoyer</button>
+          </div>
+        </div>
+        
+        
+
+      </form>
+    </div>
+  </div>
+  
+
+  <!-- <script>
+    $(document).ready(function() {
+      var submitted = document.getElementById("submitted").value;
+      // Add event listener to submit button
+      /* document.getElementById('submit').addEventListener('click', function(){
+        if(submitted == "false")
+        {
+          sendData();
+        }
+      }); */
+
+      // Function to collect form data and send it to PHP
+      function sendData() 
+      {
+        var pl=document.getElementById("platform").value;
+        pl="Facebook";
+        var q1o=[];
+        $("input[name='q1']:checked").each(function() {
+          q1o.push($(this).val());
+        });
+        var q4o=[];
+        $("input[name='q4']:checked").each(function() {
+          q4o.push($(this).val());
+        });
+        // Collect form data
+        var formData = 
+        {
+          rs1: document.querySelector('input[name="rs1"]:checked').value,
+          rs2: document.getElementById('rs2').value,
+          rs3: document.querySelector('input[name="rs3"]:checked').value,
+          rs4: document.querySelector('input[name="rs4"]:checked').value,
+          rs4_rec: document.querySelector('input[name="rs4_rec"]').value,
+          rs5: document.querySelector('input[name="rs5"]:checked').value,
+          rs_ville: document.querySelector('input[name="rs_ville"]:checked').value,
+          rs6: document.querySelector('input[name="rs6"]:checked').value,
+          rs7: document.querySelector('input[name="rs7"]:checked').value,
+          rs8: document.querySelector('input[name="rs8"]:checked').value,
+          q1: q1o.join("/"),
+          q2: document.querySelector('input[name="q2"]:checked').value,
+          q3: document.querySelector('input[name="q3"]:checked').value,
+          q4: q4o.join("/"),
+          q5: document.querySelector('input[name="q5"]:checked').value,
+          q6: document.querySelector('input[name="q6"]:checked').value,
+          q7: document.querySelector('input[name="q7"]:checked').value,
+          q8: document.querySelector('input[name="q8"]:checked').value,
+          q9: document.querySelector('input[name="q9"]:checked').value,
+          platform:pl,
+        };
+
+        // Convert form data to JSON string
+        var jsonData = JSON.stringify(formData);
+        // Send AJAX request to PHP
+        $.ajax({
+          type: "POST",
+          url: "process_form.php",
+          data: { data: jsonData},
+          success: function(response) {
+            submitted = "true";
+            window.location.replace("./merci.php");
+          },
+          error: function (xhr, status, error) {
+              console.log("Error: " + error);
+          },
+
+        }); 
+      }
+
+
+    });
+  </script> -->
+  <script src="script.js"></script>
+</body>
+</html>

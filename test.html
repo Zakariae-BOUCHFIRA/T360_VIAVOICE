@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Randomize and Display Items</title>
+</head>
+<body>
+    <div id="groupe1">
+        <!-- This is where the randomized items will be displayed -->
+    </div>
+
+    <script>
+        // Your four items
+        const items = ["Item 1", "Item 2", "Item 3", "Item 4"];
+
+        function shuffleArray(array) {
+            // Shuffles the array in a random order
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function displayRandomItems() {
+            let groupe1 = document.getElementById("groupe1");
+
+            // Randomize the order of items
+            shuffleArray(items);
+
+            // Clear the content of the "groupe1" div
+            groupe1.innerHTML = "";
+
+            // Display the items in the randomized order
+            for (let item of items) {
+                let itemElement = document.createElement("p");
+                itemElement.textContent = item;
+                groupe1.appendChild(itemElement);
+            }
+        }
+
+        // Call the displayRandomItems function to display the items in a random order
+        displayRandomItems();
+    </script>
+</body>
+</html>
